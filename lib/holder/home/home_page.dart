@@ -37,8 +37,8 @@ class HomePage extends StatelessWidget {
       body: ListView.separated(
         separatorBuilder: (context, index) => const Divider(
           height: 0,
-          indent: 16,
-          endIndent: 16,
+          indent: 20,
+          endIndent: 20,
           color: Colors.grey,
         ),
         itemBuilder: (context, index) {
