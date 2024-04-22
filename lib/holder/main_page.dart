@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_recipe01/holder/neighborhood_life/neighborhood_life_page.dart';
 
 import 'chatting/chatting_page.dart';
 import 'home/home_page.dart';
 import 'my_carrot/my_carrot_page.dart';
+import 'near_me/near_me_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -20,11 +22,11 @@ class _MainScreensState extends State<MainPage> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          ChattingPage(),
           HomePage(),
-          MyCarrotPage()
-          // NeighborhoodLifeScreen(),
-          // NearMeScreen(),
+          NeighborhoodLifePage(),
+          NearMePage(),
+          ChattingPage(),
+          MyCarrotPage(),
         ],
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
