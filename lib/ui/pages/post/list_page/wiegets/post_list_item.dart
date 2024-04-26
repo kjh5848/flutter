@@ -14,6 +14,7 @@ class PostListItem extends StatelessWidget {
         maxLines: 1,
       ),
       trailing: ClipRRect(
+        //끝부분 디자인
         borderRadius: BorderRadius.circular(50), // 네모난 이미지를 동그랗게 만들기 위한 값 설정
         child: Image.asset('assets/default_profile.png'), // 네모난 이미지
       ),
