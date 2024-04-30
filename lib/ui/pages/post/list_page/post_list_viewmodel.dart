@@ -13,7 +13,7 @@ class PostListModel {
   PageDTO page;
   List<Post> posts;
 
-  PostListModel(this.page, this.posts);
+  PostListModel({required this.page, required this.posts});
 }
 
 // 창고
