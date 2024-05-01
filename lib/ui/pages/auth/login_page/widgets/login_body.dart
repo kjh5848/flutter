@@ -21,7 +21,9 @@ class LoginBody extends StatelessWidget {
           CustomTextButton(
             "회원가입 페이지로 이동",
             () {
-              Navigator.pushNamed(context, Move.joinPage);
+              //동일한 화면을 수정하라.
+              Navigator.pushReplacementNamed(context, Move.joinPage);
+              // Navigator.pushNamed(context, Move.joinPage);
             },
           ),
         ],

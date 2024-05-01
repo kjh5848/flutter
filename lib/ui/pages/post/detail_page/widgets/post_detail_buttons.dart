@@ -14,7 +14,7 @@ class PostDetailButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Visibility(
-      visible: user.id == sessionStore.user?.id,
+      visible: user.id == sessionStore.user!.id,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [

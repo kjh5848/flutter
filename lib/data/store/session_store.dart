@@ -1,13 +1,13 @@
+// 창고 데이터
 import 'package:flutter/material.dart';
 import 'package:flutter_blog/_core/constants/http.dart';
 import 'package:flutter_blog/_core/constants/move.dart';
 import 'package:flutter_blog/data/dtos/response_dto.dart';
+import 'package:flutter_blog/data/dtos/user_request.dart';
+import 'package:flutter_blog/data/models/user.dart';
 import 'package:flutter_blog/data/reporitoreis/user_repository.dart';
 import 'package:flutter_blog/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../dtos/user_request.dart';
-import '../models/user.dart';
 
 class SessionUser {
   User? user;
@@ -17,14 +17,30 @@ class SessionUser {
   SessionUser();
 }
 
+// 창고
 class SessionStore extends SessionUser {
+  Ref ref;
   final mContext = navigatorKey.currentContext;
+
+  SessionStore(this.ref);
+
+  void loginCheck(String path) {
+    if (isLogin) {
+      Navigator.pushNamed(mContext!, path);
+    } else {
+      Navigator.pushNamed(mContext!, Move.loginPage);
+    }
+  }
 
   Future<void> join(JoinReqDTO joinReqDTO) async {
     ResponseDTO responseDTO = await UserRepository().fetchJoin(joinReqDTO);
 
+    // 비지니스 로직
     if (responseDTO.success) {
-      Navigator.pushNamed(mContext!, Move.loginPage);
+      Navigator.pushAndRemoveUntil(
+          mContext!, Move.postWritePage, (route) => false);
+
+      Navigator.pop(mContext!);
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
         SnackBar(content: Text("로그인 실패 : ${responseDTO.errorMessage}")),
@@ -46,12 +62,12 @@ class SessionStore extends SessionUser {
       Navigator.pushNamed(mContext!, Move.postListPage);
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
-        SnackBar(content: Text("로그인 실패 : ${responseDTO.errorMessage}")),
-      );
+          SnackBar(content: Text("로그인 실패 : ${responseDTO.errorMessage}")));
     }
   }
 }
 
+// 창고 관리자
 final sessionProvider = StateProvider<SessionStore>((ref) {
-  return SessionStore();
+  return SessionStore(ref);
 });
