@@ -1,13 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blog/_core/constants/move.dart';
 import 'package:flutter_blog/_core/constants/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '_core/constants/exception_handler.dart';
+
 // TODO: 궁금증1 GlobalKey
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
-  runApp(ProviderScope(child: const MyApp()));
+  runZonedGuarded(() => runApp(ProviderScope(child: const MyApp())),
+      (error, stack) {
+    ExceptionHandler.handleException(error, stack);
+  });
 }
 
 class MyApp extends StatelessWidget {

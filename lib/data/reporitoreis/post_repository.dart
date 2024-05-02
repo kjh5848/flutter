@@ -9,6 +9,16 @@ import 'package:logger/logger.dart';
 
 class PostRepository {
   //인터셉터로 만드는게 좋다.
+  Future<ResponseDTO> deletePost(int postId, String accessToken) async {
+    var response = await dio.delete("/api/post/${postId}",
+        options: Options(headers: {"Authorization": "${accessToken}"}));
+
+    ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
+
+    return responseDTO;
+  }
+
+  //인터셉터로 만드는게 좋다.
   Future<ResponseDTO> savePost(
       PostSaveReqDTO reqDTO, String accessToken) async {
     Response response = await dio.post("/api/post",

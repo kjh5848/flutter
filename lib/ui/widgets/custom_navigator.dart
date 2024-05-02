@@ -42,7 +42,7 @@ class CustomNavigation extends StatelessWidget {
               TextButton(
                 onPressed: () {
                   scaffoldKey.currentState!.openEndDrawer();
-                  Navigator.popAndPushNamed(context, Move.loginPage);
+                  Navigator.pushNamed(context, Move.postWritePage);
                 },
                 child: const Text(
                   "로그아웃",

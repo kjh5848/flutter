@@ -33,6 +33,7 @@ class PostDetailBody extends ConsumerWidget {
             PostDetailButtons(
               user: model.post.user,
               sessionStore: sessionStore!,
+              postId: postId,
             ),
             const Divider(),
             const SizedBox(height: largeGap),

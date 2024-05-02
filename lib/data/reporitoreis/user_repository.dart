@@ -1,3 +1,4 @@
+import 'package:flutter_blog/_core/constants/exception_handler.dart';
 import 'package:flutter_blog/data/dtos/user_request.dart';
 
 import '../../_core/constants/http.dart';
@@ -23,7 +24,7 @@ class UserRepository {
       final accessToken = response.headers["Authorization"]!.first;
       return (responseDTO, accessToken);
     } else {
-      return (responseDTO, "");
+      throw new ExceptionHandler();
     }
   }
 }

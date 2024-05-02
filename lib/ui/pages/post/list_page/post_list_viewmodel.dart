@@ -20,7 +20,18 @@ class PostListModel {
 class PostListViewModel extends StateNotifier<PostListModel?> {
   final mContext = navigatorKey.currentContext;
   final Ref ref;
+
   PostListViewModel(super.state, this.ref);
+
+// 통신없이 상태 변경
+  void deletePost(int postId) {
+    PostListModel model = state!;
+    List<Post> prevPosts = model.posts;
+    PageDTO prevPage = model.page;
+
+    List<Post> newPosts = prevPosts.where((p) => p.id != postId).toList();
+    state = PostListModel(posts: newPosts, page: prevPage);
+  }
 
   Future<void> notifyInit(int page) async {
     SessionStore sessionStore = ref.read(sessionProvider);

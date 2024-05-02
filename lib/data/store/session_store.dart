@@ -37,9 +37,6 @@ class SessionStore extends SessionUser {
 
     // 비지니스 로직
     if (responseDTO.success) {
-      Navigator.pushAndRemoveUntil(
-          mContext!, Move.postWritePage, (route) => false);
-
       Navigator.pop(mContext!);
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
