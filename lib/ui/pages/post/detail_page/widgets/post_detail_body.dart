@@ -18,7 +18,8 @@ class PostDetailBody extends ConsumerWidget {
 
     // 매개변수가 다르면, 여러개 만들어지고, 기본적으로는 싱글톤으로 관리된다.
     PostDetailModel? model = ref.watch(postDetailProvider(postId));
-    SessionStore sessionStore = ref.watch(sessionProvider);
+    int sessionUserId = ref.read(sessionProvider).user!.id;
+    ref.read(sessionProvider).selectedPostId = postId;
 
     if (model == null) {
       return CircularProgressIndicator();
@@ -32,7 +33,7 @@ class PostDetailBody extends ConsumerWidget {
             PostDetailProfile(user: model.post.user),
             PostDetailButtons(
               user: model.post.user,
-              sessionStore: sessionStore!,
+              sessionUserId: sessionUserId,
               postId: postId,
             ),
             const Divider(),

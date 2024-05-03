@@ -1,5 +1,5 @@
-import 'package:flutter_blog/_core/constants/exception_handler.dart';
 import 'package:flutter_blog/data/dtos/user_request.dart';
+import 'package:logger/logger.dart';
 
 import '../../_core/constants/http.dart';
 import '../dtos/response_dto.dart';
@@ -19,12 +19,15 @@ class UserRepository {
 
     ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
 
+    Logger().d(response.data!);
+
     if (responseDTO.success) {
       responseDTO.response = User.fromJson(responseDTO.response);
       final accessToken = response.headers["Authorization"]!.first;
+      Logger().d(accessToken);
       return (responseDTO, accessToken);
     } else {
-      throw new ExceptionHandler();
+      throw new Exception("${responseDTO.errorMessage}");
     }
   }
 }

@@ -22,7 +22,7 @@ class LoginBody extends StatelessWidget {
             "회원가입 페이지로 이동",
             () {
               //동일한 화면을 수정하라.
-              Navigator.pushReplacementNamed(context, Move.joinPage);
+              Navigator.pushNamed(context, Move.joinPage);
               // Navigator.pushNamed(context, Move.joinPage);
             },
           ),

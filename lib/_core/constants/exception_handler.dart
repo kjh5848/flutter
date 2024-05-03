@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blog/main.dart';
+
+import '../../main.dart';
 
 class ExceptionHandler {
   static void handleException(dynamic exception, StackTrace stackTrace) {

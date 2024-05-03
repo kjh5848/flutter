@@ -13,6 +13,7 @@ class SessionUser {
   User? user;
   String? accessToken;
   bool isLogin = false;
+  int? selectedPostId;
 
   SessionUser();
 }
@@ -51,7 +52,6 @@ class SessionStore extends SessionUser {
 
     if (responseDTO.success) {
       await secureStorage.write(key: "accessToken", value: accessToken);
-
       this.user = responseDTO.response;
       this.accessToken = accessToken;
       this.isLogin = true;
@@ -59,7 +59,8 @@ class SessionStore extends SessionUser {
       Navigator.pushNamed(mContext!, Move.postListPage);
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
-          SnackBar(content: Text("로그인 실패 : ${responseDTO.errorMessage}")));
+        SnackBar(content: Text("로그인 실패 : ${responseDTO.errorMessage}")),
+      );
     }
   }
 }

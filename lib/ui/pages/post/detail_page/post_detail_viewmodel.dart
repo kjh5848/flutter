@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blog/data/dtos/post_request.dart';
 import 'package:flutter_blog/data/dtos/response_dto.dart';
 import 'package:flutter_blog/data/models/post.dart';
 import 'package:flutter_blog/data/reporitoreis/post_repository.dart';
@@ -21,10 +22,27 @@ class PostDetailViewModel extends StateNotifier<PostDetailModel?> {
 
   PostDetailViewModel(super.state, this.ref);
 
+  Future<void> notifyUpdate(int postId, PostUpdateReqDTO reqDTO) async {
+    SessionStore sessionStore = ref.read(sessionProvider);
+    ResponseDTO responseDTO = await PostRepository()
+        .updatePost(postId, reqDTO, sessionStore.accessToken!);
+
+    if (responseDTO.success) {
+      state = PostDetailModel(responseDTO.response);
+      await ref
+          .read(postListProvider.notifier)
+          .updatePost(responseDTO.response);
+      Navigator.pop(mContext!);
+    } else {
+      ScaffoldMessenger.of(mContext!).showSnackBar(
+        SnackBar(content: Text("게시물 수정 실패 : ${responseDTO.errorMessage}")),
+      );
+    }
+  }
+
   Future<void> notifyDelete(int postId) async {
     SessionStore sessionStore = ref.read(sessionProvider);
-    ResponseDTO responseDTO =
-        await PostRepository().deletePost(postId, sessionStore.accessToken!);
+    ResponseDTO responseDTO = await PostRepository().deletePost(postId);
 
     if (responseDTO.success) {
       // 두가지 상태 변경 1. PostDetail, 2. PostList(ref)
@@ -54,7 +72,8 @@ class PostDetailViewModel extends StateNotifier<PostDetailModel?> {
 }
 
 // 화면이 stack 에서 제거될때, 창고도 함께 제거되게 하기 (autoDispose)
-final postDetailProvider = StateNotifierProvider.autoDispose
-    .family<PostDetailViewModel, PostDetailModel?, int>((ref, postId) {
+
+final postDetailProvider = StateNotifierProvider.family
+    .autoDispose<PostDetailViewModel, PostDetailModel?, int>((ref, postId) {
   return PostDetailViewModel(null, ref)..notifyInit(postId);
 });
