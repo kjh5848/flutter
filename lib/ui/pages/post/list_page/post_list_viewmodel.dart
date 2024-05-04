@@ -34,10 +34,7 @@ class PostListViewModel extends StateNotifier<PostListModel?> {
   }
 
   Future<void> notifyInit(int page) async {
-    SessionStore sessionStore = ref.read(sessionProvider);
-    String jwt = sessionStore.accessToken!;
-
-    ResponseDTO responseDTO = await PostRepository().fetchPostList(jwt);
+    ResponseDTO responseDTO = await PostRepository().fetchPostList();
 
     if (responseDTO.success) {
       state = responseDTO.response;
@@ -48,9 +45,8 @@ class PostListViewModel extends StateNotifier<PostListModel?> {
   }
 
   Future<void> notifyAdd(PostSaveReqDTO reqDTO) async {
-    SessionUser sessionUser = ref.read(sessionProvider);
     ResponseDTO responseDTO =
-        await PostRepository().savePost(reqDTO, sessionUser.accessToken!);
+        await PostRepository().savePost(reqDTO);
 
     if (responseDTO.success) {
       Post newPost = responseDTO.response;
@@ -114,6 +110,7 @@ class PostListViewModel extends StateNotifier<PostListModel?> {
     // 통신코드
   }
 }
+
 
 // 창고 관리자
 final postListProvider =

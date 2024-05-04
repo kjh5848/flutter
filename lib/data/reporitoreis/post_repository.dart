@@ -10,29 +10,18 @@ import 'package:logger/logger.dart';
 class PostRepository {
   //인터셉터로 만드는게 좋다.
   Future<ResponseDTO> updatePost(
-      int postId, PostUpdateReqDTO postUpdateReqDTO, String accessToken) async {
+      int postId, PostUpdateReqDTO postUpdateReqDTO) async {
     var response = await dio.put("/api/post/${postId}",
-        data: postUpdateReqDTO.toJson(),
-        options: Options(headers: {"Authorization": "${accessToken}"}));
+        data: postUpdateReqDTO.toJson());
 
     ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
-
+    Logger().d(response.data!);
     if (responseDTO.success) {
       responseDTO.response = Post.fromJson(responseDTO.response);
     }
-
     return responseDTO;
   }
 
-  // //인터셉터로 만드는게 좋다.
-  // Future<ResponseDTO> deletePost(int postId, String accessToken) async {
-  //   var response = await dio.delete("/api/post/${postId}",
-  //       options: Options(headers: {"Authorization": "${accessToken}"}));
-  //
-  //   ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
-  //
-  //   return responseDTO;
-  // }
 
   Future<ResponseDTO> deletePost(int postId) async {
     var response = await dio.delete("/api/post/$postId");
@@ -44,9 +33,8 @@ class PostRepository {
 
   //인터셉터로 만드는게 좋다.
   Future<ResponseDTO> savePost(
-      PostSaveReqDTO reqDTO, String accessToken) async {
+      PostSaveReqDTO reqDTO) async {
     Response response = await dio.post("/api/post",
-        options: Options(headers: {"Authorization": "$accessToken"}),
         data: reqDTO.toJson());
 
     ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
@@ -59,10 +47,9 @@ class PostRepository {
     return responseDTO;
   }
 
-  Future<ResponseDTO> fetchPost(int postId, String accessToken) async {
+  Future<ResponseDTO> fetchPost(int postId) async {
     // 통신
-    Response response = await dio.get("/api/post/$postId",
-        options: Options(headers: {"Authorization": "$accessToken"}));
+    Response response = await dio.get("/api/post/$postId");
 
     // 응답 받은 데이터 파싱
     ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
@@ -74,11 +61,10 @@ class PostRepository {
     return responseDTO;
   }
 
-  Future<ResponseDTO> fetchPostList(String accessToken, {int page = 0}) async {
+  Future<ResponseDTO> fetchPostList({int page = 0}) async {
     final response = await dio.get(
       "/api/post",
       queryParameters: {"page": page},
-      options: Options(headers: {"Authorization": "${accessToken}"}),
     );
 
     ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);

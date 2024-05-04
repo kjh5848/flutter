@@ -1,14 +1,12 @@
+import 'package:flutter_blog/_core/constants/http.dart';
 import 'package:flutter_blog/data/dtos/post_request.dart';
 import 'package:flutter_blog/data/reporitoreis/post_repository.dart';
 
 void main() async {
-  await deletePost_test();
+  dio.interceptors.remove(interceptor);
+  await updatePost_test();
 }
 
-Future<void> fetchjoin_test() async {
-  await PostRepository().fetchPostList(
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpbWdVcmwiOiIvaW1hZ2VzLzEuanBnIiwic3ViIjoibWV0YWNvZGluZyIsImlkIjoxLCJleHAiOjE3MTQ3ODQyODAsInVzZXJuYW1lIjoic3NhciJ9.7R-jq88U9fSzAEMhTn9k5vNMmpvU-kiVhdiIeUOnXFKHk-owhdWX_8XFFdJVOII-A7jNKfFXVTGLt58_BqvKxA");
-}
 
 Future<void> updatePost_test() async {
   PostUpdateReqDTO reqDTO =
@@ -16,8 +14,7 @@ Future<void> updatePost_test() async {
 
   int postId = 1;
 
-  await PostRepository().updatePost(postId, reqDTO,
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpbWdVcmwiOiIvaW1hZ2VzLzEucG5nIiwic3ViIjoibWV0YWNvZGluZyIsImlkIjoxLCJleHAiOjE3MTQ4Njg4NTUsInVzZXJuYW1lIjoic3NhciJ9.Rbe3Nguma0uC0CYy6Gv_QIZcxODTGGHxtuvva87NQykafAIqZSY2TInghOGLtKOmMzbORW-w_Q4EpljCVPpxjQ");
+  await PostRepository().updatePost(postId, reqDTO  );
 }
 
 Future<void> deletePost_test() async {
@@ -28,16 +25,15 @@ Future<void> savePost_test() async {
   PostSaveReqDTO reqDTO =
       PostSaveReqDTO(title: "title 24", content: "content 24");
 
-  await PostRepository().savePost(reqDTO,
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpbWdVcmwiOiIvaW1hZ2VzLzEuanBnIiwic3ViIjoibWV0YWNvZGluZyIsImlkIjoxLCJleHAiOjE3MTQ3ODQyODAsInVzZXJuYW1lIjoic3NhciJ9.7R-jq88U9fSzAEMhTn9k5vNMmpvU-kiVhdiIeUOnXFKHk-owhdWX_8XFFdJVOII-A7jNKfFXVTGLt58_BqvKxA");
+  await PostRepository().savePost(reqDTO      );
 }
 
 Future<void> fetchPost_test() async {
   await PostRepository().fetchPost(2,
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpbWdVcmwiOiIvaW1hZ2VzLzEuanBnIiwic3ViIjoibWV0YWNvZGluZyIsImlkIjoxLCJleHAiOjE3MTQ3ODQyODAsInVzZXJuYW1lIjoic3NhciJ9.7R-jq88U9fSzAEMhTn9k5vNMmpvU-kiVhdiIeUOnXFKHk-owhdWX_8XFFdJVOII-A7jNKfFXVTGLt58_BqvKxA");
+      );
 }
 
 Future<void> fetchPostList_test() async {
   await PostRepository().fetchPostList(
-      "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpbWdVcmwiOiIvaW1hZ2VzLzEuanBnIiwic3ViIjoibWV0YWNvZGluZyIsImlkIjoxLCJleHAiOjE3MTQ3ODQyODAsInVzZXJuYW1lIjoic3NhciJ9.7R-jq88U9fSzAEMhTn9k5vNMmpvU-kiVhdiIeUOnXFKHk-owhdWX_8XFFdJVOII-A7jNKfFXVTGLt58_BqvKxA");
+      );
 }

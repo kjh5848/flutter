@@ -10,22 +10,18 @@ class UserRepository {
     final response = await dio.post("/join", data: requestDTO.toJson());
 
     ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
-
     return responseDTO;
   }
 
-  Future<(ResponseDTO, String)> fetchLogin(LoginReqDTO requestDTO) async {
-    final response = await dio.post("/login", data: requestDTO.toJson());
-
+  Future<ResponseDTO> fetchLogin(LoginReqDTO loginReqDTO) async {
+    final response = await dio.post("/login", data: loginReqDTO.toJson());
     ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
-
-    Logger().d(response.data!);
+    Logger().d(response.headers["Authorization"]!.first);
 
     if (responseDTO.success) {
       responseDTO.response = User.fromJson(responseDTO.response);
-      final accessToken = response.headers["Authorization"]!.first;
-      Logger().d(accessToken);
-      return (responseDTO, accessToken);
+
+      return (responseDTO);
     } else {
       throw new Exception("${responseDTO.errorMessage}");
     }
