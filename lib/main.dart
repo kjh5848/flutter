@@ -4,6 +4,8 @@ import 'package:flutter_blog/_core/constants/move.dart';
 import 'package:flutter_blog/_core/constants/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '_core/constants/http.dart';
+
 // TODO: 궁금증1 GlobalKey
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

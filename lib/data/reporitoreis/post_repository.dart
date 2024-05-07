@@ -19,19 +19,8 @@ class PostRepository {
     if (responseDTO.success) {
       responseDTO.response = Post.fromJson(responseDTO.response);
     }
-
     return responseDTO;
   }
-
-  // //인터셉터로 만드는게 좋다.
-  // Future<ResponseDTO> deletePost(int postId, String accessToken) async {
-  //   var response = await dio.delete("/api/post/${postId}",
-  //       options: Options(headers: {"Authorization": "${accessToken}"}));
-  //
-  //   ResponseDTO responseDTO = ResponseDTO.fromJson(response.data);
-  //
-  //   return responseDTO;
-  // }
 
   Future<ResponseDTO> deletePost(int postId) async {
     var response = await dio.delete("/api/post/$postId");

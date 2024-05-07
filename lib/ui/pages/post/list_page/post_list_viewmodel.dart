@@ -103,7 +103,6 @@ class PostListViewModel extends StateNotifier<PostListModel?> {
   //   state = PostListModel(page: pageDTO, posts: newPosts);
   // }
 
-  //
   Future<void> updatePost(Post post) async {
     // 1. 기존 값 가지고 오기
     PostListModel model = state!;
@@ -128,19 +127,6 @@ class PostListViewModel extends StateNotifier<PostListModel?> {
         () => {});
     state = PostListModel(page: prevPage, posts: newPosts);
     // 통신코드
-  }
-
-  //로드함수
-  Future<void> nextList() async {
-    PageDTO pageDTO = state!.page;
-    if (pageDTO.isLast) {
-      //마지막 페이지에서 아무것도 없다는 0.5초 제스처를 준다.
-      await Future.delayed(Duration(microseconds: 500));
-      refreshCtrl.loadComplete();
-      return;
-    }
-    await notifyInit(pageDTO.pageNumber + 1);
-    refreshCtrl.loadComplete();
   }
 }
 

@@ -1,8 +1,10 @@
+import 'package:flutter_blog/_core/constants/http.dart';
 import 'package:flutter_blog/data/dtos/post_request.dart';
 import 'package:flutter_blog/data/reporitoreis/post_repository.dart';
 
 void main() async {
-  await deletePost_test();
+  dio.interceptors.remove(interceptor);
+  await updatePost_test();
 }
 
 Future<void> fetchjoin_test() async {
