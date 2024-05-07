@@ -7,6 +7,7 @@ import 'package:flutter_blog/data/reporitoreis/post_repository.dart';
 import 'package:flutter_blog/data/store/session_store.dart';
 import 'package:flutter_blog/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 // 창고 데이터
 class PostListModel {
@@ -18,6 +19,7 @@ class PostListModel {
 
 // 창고
 class PostListViewModel extends StateNotifier<PostListModel?> {
+  final refreshCtrl = RefreshController();
   final mContext = navigatorKey.currentContext;
   final Ref ref;
 
@@ -33,24 +35,37 @@ class PostListViewModel extends StateNotifier<PostListModel?> {
     state = PostListModel(posts: newPosts, page: prevPage);
   }
 
-  Future<void> notifyInit(int page) async {
-    SessionStore sessionStore = ref.read(sessionProvider);
-    String jwt = sessionStore.accessToken!;
-
-    ResponseDTO responseDTO = await PostRepository().fetchPostList(jwt);
+  Future<void> notifyInit(int page, {bool isLoad = false}) async {
+    ResponseDTO responseDTO = await PostRepository().fetchPostList(page: page);
 
     if (responseDTO.success) {
-      state = responseDTO.response;
+      //페이징된 모델을 들고 온다.
+      PostListModel nextModel = responseDTO.response;
+
+      if (page > 0) {
+        //페이지 0을 들고온다.
+        PostListModel prevModel = state!;
+        //새 리스트에 이전 페이지와 페이지들을 들고 온다.
+        nextModel.posts = [...prevModel.posts, ...nextModel.posts];
+
+        state = nextModel;
+      } else {
+        state = nextModel;
+      }
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
           SnackBar(content: Text("게시물 보기 실패 : ${responseDTO.errorMessage}")));
     }
+    refreshCtrl.refreshCompleted();
+    // if (isLoad == false) {
+    //   //이벤트 종료시에 리플레쉬 종료(최초로드, 풀다운)
+    //   refreshCtrl.refreshCompleted();
+    // }
   }
 
   Future<void> notifyAdd(PostSaveReqDTO reqDTO) async {
     SessionUser sessionUser = ref.read(sessionProvider);
-    ResponseDTO responseDTO =
-        await PostRepository().savePost(reqDTO, sessionUser.accessToken!);
+    ResponseDTO responseDTO = await PostRepository().savePost(reqDTO);
 
     if (responseDTO.success) {
       Post newPost = responseDTO.response;
@@ -88,6 +103,7 @@ class PostListViewModel extends StateNotifier<PostListModel?> {
   //   state = PostListModel(page: pageDTO, posts: newPosts);
   // }
 
+  //
   Future<void> updatePost(Post post) async {
     // 1. 기존 값 가지고 오기
     PostListModel model = state!;
@@ -112,6 +128,19 @@ class PostListViewModel extends StateNotifier<PostListModel?> {
         () => {});
     state = PostListModel(page: prevPage, posts: newPosts);
     // 통신코드
+  }
+
+  //로드함수
+  Future<void> nextList() async {
+    PageDTO pageDTO = state!.page;
+    if (pageDTO.isLast) {
+      //마지막 페이지에서 아무것도 없다는 0.5초 제스처를 준다.
+      await Future.delayed(Duration(microseconds: 500));
+      refreshCtrl.loadComplete();
+      return;
+    }
+    await notifyInit(pageDTO.pageNumber + 1);
+    refreshCtrl.loadComplete();
   }
 }
 

@@ -23,9 +23,7 @@ class PostDetailViewModel extends StateNotifier<PostDetailModel?> {
   PostDetailViewModel(super.state, this.ref);
 
   Future<void> notifyUpdate(int postId, PostUpdateReqDTO reqDTO) async {
-    SessionStore sessionStore = ref.read(sessionProvider);
-    ResponseDTO responseDTO = await PostRepository()
-        .updatePost(postId, reqDTO, sessionStore.accessToken!);
+    ResponseDTO responseDTO = await PostRepository().updatePost(postId, reqDTO);
 
     if (responseDTO.success) {
       state = PostDetailModel(responseDTO.response);
@@ -41,7 +39,6 @@ class PostDetailViewModel extends StateNotifier<PostDetailModel?> {
   }
 
   Future<void> notifyDelete(int postId) async {
-    SessionStore sessionStore = ref.read(sessionProvider);
     ResponseDTO responseDTO = await PostRepository().deletePost(postId);
 
     if (responseDTO.success) {
@@ -63,8 +60,7 @@ class PostDetailViewModel extends StateNotifier<PostDetailModel?> {
   Future<void> notifyInit(int postId) async {
     // 통신하기
     SessionStore sessionStore = ref.read(sessionProvider);
-    ResponseDTO responseDTO =
-        await PostRepository().fetchPost(postId, sessionStore.accessToken!);
+    ResponseDTO responseDTO = await PostRepository().fetchPost(postId);
     Logger().d(responseDTO.response);
     // 상태값 갱신 (새로 new해서 넣어줘야 한다)
     state = PostDetailModel(responseDTO.response);
